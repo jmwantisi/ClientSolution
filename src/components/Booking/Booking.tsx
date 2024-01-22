@@ -1,6 +1,5 @@
 //import './BiometricsComponent.styles.css'
-import { useState, useEffect, useRef } from 'react';
-import './Booking.styles.css'
+import { useState, useRef } from 'react';
 import { post, get } from '../../apiClient'
 import { Form } from 'react-bootstrap';
 import { Toast } from 'primereact/toast';

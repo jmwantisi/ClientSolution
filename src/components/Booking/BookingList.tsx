@@ -11,7 +11,7 @@ import { get } from '../../apiClient'
 import Header from '../Header';
 import Booking from './Booking';
 
-export default function ProductsDemo() {
+export default function BookingList() {
     let emptyProduct = {
         id: null,
         name: '',
@@ -24,9 +24,9 @@ export default function ProductsDemo() {
         inventoryStatus: 'INSTOCK'
     };
 
-    const [products, setProducts] : any = useState(null);
-    const [productDialog, setProductDialog] = useState(false);
-    const [deleteProductDialog, setDeleteProductDialog] = useState(false);
+    const [bookings, setBookings] : any = useState(null);
+    const [bookingDialog, setBookingDialog] = useState(false);
+    const [deleteBookingDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] : any = useState(null);
@@ -44,7 +44,7 @@ export default function ProductsDemo() {
         // start working from here
         get('booking', headers).then((data: any) => {
             console.log(data) 
-            setProducts(data.data)
+            setBookings(data.data)
             
         })
         
@@ -54,12 +54,12 @@ export default function ProductsDemo() {
         setProduct(emptyProduct);
         setSubmitted(false);
         
-        setProductDialog(!submitted);
+        setBookingDialog(!submitted);
     };
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProductDialog(false);
+        setBookingDialog(false);
     };
 
     const hideDeleteProductDialog = () => {
@@ -71,8 +71,16 @@ export default function ProductsDemo() {
     };
 
     const editProduct = (product : any) => {
+
+        console.log("", product)
+
+        get('booking/id', headers).then((data: any) => {
+            console.log(data) 
+            setBookings(data.data)
+            
+        })
         setProduct({ ...product });
-        setProductDialog(true);
+        setBookingDialog(true);
     };
 
     const confirmDeleteProduct = (product : any) => {
@@ -81,9 +89,9 @@ export default function ProductsDemo() {
     };
 
     const deleteProduct = () => {
-        let _products = products.filter((val : any) => val.id !== product.id);
+        let _products = bookings.filter((val : any) => val.id !== product.id);
 
-        setProducts(_products);
+        setBookings(_products);
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
@@ -98,9 +106,9 @@ export default function ProductsDemo() {
     };
 
     const deleteSelectedProducts = () => {
-        let _products = products.filter((val : any) => !selectedProducts.includes(val));
+        let items = bookings.filter((val : any) => !selectedProducts.includes(val));
 
-        setProducts(_products);
+        setBookings(items);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
@@ -171,22 +179,22 @@ export default function ProductsDemo() {
             <div className="card">
                 <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
 
-                <DataTable ref={dt} value={products} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
+                <DataTable ref={dt} value={bookings} selection={selectedProducts} onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id"  paginator rows={10} rowsPerPageOptions={[5, 10, 25]}
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products" globalFilter={globalFilter} header={header}>
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} bookings" globalFilter={globalFilter} header={header}>
                     <Column selectionMode="multiple" exportable={false}></Column>
                     <Column field="bookingid" header="Booking ID" body={fullNameTemplate} sortable></Column>
                     <Column header="Edit/Delete" body={actionBodyTemplate} exportable={false}></Column>
                 </DataTable>
             </div>
 
-            <Dialog visible={productDialog} style={{ width: '100rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Booking Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+            <Dialog visible={bookingDialog} style={{ width: '100rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Booking Details" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
                 <Booking/>
                 {product.image && <img src={`https://primefaces.org/cdn/primereact/images/product/${product.image}`} alt={product.image} className="product-image block m-auto pb-3" />}
             </Dialog>
 
-            <Dialog visible={deleteProductDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
+            <Dialog visible={deleteBookingDialog} style={{ width: '32rem' }} breakpoints={{ '960px': '75vw', '641px': '90vw' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                 <div className="confirmation-content">
                     <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
                     {product && (
