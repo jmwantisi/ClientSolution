@@ -133,7 +133,7 @@ export default function BookingList() {
 
     const fullNameTemplate = (rowData : any) => {
         const name = `${rowData.bookingid}`;
-        return <Link to='#'> {name} </Link>;
+        return <Link onClick={editProduct} to='#'> {name} </Link>;
     };
 
     const actionBodyTemplate = (rowData : any) => {
