@@ -94,7 +94,7 @@ export default function BookingList() {
         setBookings(_products);
         setDeleteProductDialog(false);
         setProduct(emptyProduct);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Booking Deleted', life: 3000 });
     };
 
     const exportCSV = () => {
